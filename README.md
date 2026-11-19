@@ -19,7 +19,7 @@ cspc-project/
 └── README.md           # Project documentation
 ```
 
-## Data Preprocessing Methodology (`src/processing.py`)
+## Stage 0: Data Preprocessing Methodology (`src/processing.py`)
 
 To prevent spatial boundary leakage across different monitoring sites and preserve temporal continuity, the following preprocessing pipeline was implemented:
 
@@ -42,3 +42,26 @@ To prevent spatial boundary leakage across different monitoring sites and preser
    ```bash
    snakemake --cores 1
    ```
+   
+## Stage 1: Normality Testing & Correlation Analysis (`src/correlation.py`)
+
+### 1. Normality Assessment & Method Justification
+Before computing relationships between variables, all 11 numerical parameters (`PM2.5`, `PM10`, `SO2`, `NO2`, `CO`, `O3`, `TEMP`, `PRES`, `DEWP`, `RAIN`, `WSPM`) were tested for Gaussian distribution using **D'Agostino's K² test** (`scipy.stats.normaltest`) alongside **skewness** measurements:
+* **Result:** Every variable rejected the null hypothesis of normality (`p < 0.05`, `is_normal = False`).
+* **Physical & Statistical Reasoning:**
+  * **Right-Skewed Pollutants & Precipitation:** Concentrations such as `PM2.5` (`skew ≈ 2.02`), `CO` (`skew ≈ 2.63`), `SO2` (`skew ≈ 3.18`), and `RAIN` (`skew ≈ 30.06`) are bounded at zero and exhibit long right tails due to acute winter smog episodes and heavy rainfall events.
+  * **Large Sample Sensitivity:** Meteorological variables (`TEMP`, `PRES`, `DEWP`) display near-zero skewness (`≈ ±0.10` to `-0.19`), yet still yield `p = 0.0` due to seasonal bimodality amplified by the large sample size (`N = 420,768`).
+* **Methodological Choice:** Because parametric assumptions are violated across the dataset, **Spearman's rank correlation (ρ)** was selected over Pearson's linear correlation (`r`) as the primary metric, supported by non-parametric hypothesis tests in subsequent stages.
+
+### 2. Key Correlation Findings
+The Spearman correlation matrix (`results/correlation_spearman.csv`) and heatmap (`results/graphs/correlation_heatmap.png`) reveal clear atmospheric and physical patterns:
+* **Combustion & Traffic Cluster:** Strong positive correlations exist among `PM2.5`, `PM10` (`ρ = 0.89`), `CO` (`ρ = 0.82`), and `NO2` (`ρ = 0.66`), indicating shared emission sources such as vehicular exhaust and coal/fossil fuel combustion.
+* **Photochemical Ozone Dynamics:** Surface ozone (`O3`) correlates positively with temperature (`TEMP`, `ρ = 0.58`) and negatively with `NO2` (`ρ = -0.61`), reflecting sunlight-driven photochemical reactions that consume `NO2` to generate `O3`.
+* **Wind Dispersion Effect:** Wind speed (`WSPM`) shows consistent negative correlations with `NO2` (`ρ = -0.44`), `CO` (`ρ = -0.38`), and `PM2.5` (`ρ = -0.33`), confirming atmospheric dispersion and pollutant clearance during windy conditions.
+* **Meteorological Consistency:** Temperature (`TEMP`) exhibits a strong inverse relationship with atmospheric pressure (`PRES`, `ρ = -0.82`) and a strong positive correlation with dew point (`DEWP`, `ρ = 0.82`).
+
+### 3. Updated Snakemake Outputs
+Running `snakemake --cores 1` now additionally generates:
+* `results/normality_tests.csv` — D'Agostino K² statistics, p-values, and skewness coefficients.
+* `results/correlation_spearman.csv` & `results/correlation_pearson.csv` — Full pairwise correlation matrices.
+* `results/graphs/correlation_heatmap.png` — Annotated Spearman correlation heatmap.
