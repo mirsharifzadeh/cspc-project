@@ -1,7 +1,14 @@
 name: project
 channels:
-- conda-forge
+  - conda-forge
+  - bioconda
 dependencies:
-- python=3.11
-- numpy
-- pytest
+  - python=3.11
+  - numpy
+  - pandas
+  - scipy
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - snakemake
+  - pytest

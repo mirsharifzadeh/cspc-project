@@ -1,0 +1,113 @@
+season,split,model,feature,value
+Spring,random_80_20,linear (standardized coef),TEMP,-0.36584287473301846
+Spring,random_80_20,linear (standardized coef),PRES,-0.057971115867081535
+Spring,random_80_20,linear (standardized coef),DEWP,0.6011412086703001
+Spring,random_80_20,linear (standardized coef),RAIN,-0.060941908159146296
+Spring,random_80_20,linear (standardized coef),WSPM,-0.02818704251456365
+Spring,random_80_20,linear (standardized coef),wd_sin,0.06860467215522664
+Spring,random_80_20,linear (standardized coef),wd_cos,-0.22256652330610255
+Spring,random_80_20,decision_tree (importance),TEMP,0.16815048232378393
+Spring,random_80_20,decision_tree (importance),PRES,0.15061289691227017
+Spring,random_80_20,decision_tree (importance),DEWP,0.4278758734290976
+Spring,random_80_20,decision_tree (importance),RAIN,0.009276811942576242
+Spring,random_80_20,decision_tree (importance),WSPM,0.1154965653946184
+Spring,random_80_20,decision_tree (importance),wd_sin,0.043085590278537804
+Spring,random_80_20,decision_tree (importance),wd_cos,0.08550177971911588
+Spring,chronological_last_year,linear (standardized coef),TEMP,-0.3176934129336638
+Spring,chronological_last_year,linear (standardized coef),PRES,-0.003837318100529119
+Spring,chronological_last_year,linear (standardized coef),DEWP,0.6116398499757709
+Spring,chronological_last_year,linear (standardized coef),RAIN,-0.059287528347363457
+Spring,chronological_last_year,linear (standardized coef),WSPM,-0.03326852412336799
+Spring,chronological_last_year,linear (standardized coef),wd_sin,0.05522412368439095
+Spring,chronological_last_year,linear (standardized coef),wd_cos,-0.19988109675122756
+Spring,chronological_last_year,decision_tree (importance),TEMP,0.10934474603536808
+Spring,chronological_last_year,decision_tree (importance),PRES,0.04641740479394817
+Spring,chronological_last_year,decision_tree (importance),DEWP,0.640762790992511
+Spring,chronological_last_year,decision_tree (importance),RAIN,0.007271436662146107
+Spring,chronological_last_year,decision_tree (importance),WSPM,0.08065911541393384
+Spring,chronological_last_year,decision_tree (importance),wd_sin,0.005651440389982227
+Spring,chronological_last_year,decision_tree (importance),wd_cos,0.10989306571211076
+Summer,random_80_20,linear (standardized coef),TEMP,-0.017002157274601082
+Summer,random_80_20,linear (standardized coef),PRES,0.06770745944190452
+Summer,random_80_20,linear (standardized coef),DEWP,0.49816589639705594
+Summer,random_80_20,linear (standardized coef),RAIN,-0.027555576309952146
+Summer,random_80_20,linear (standardized coef),WSPM,0.0007862311281234963
+Summer,random_80_20,linear (standardized coef),wd_sin,0.05676599868462476
+Summer,random_80_20,linear (standardized coef),wd_cos,-0.18487254652356858
+Summer,random_80_20,decision_tree (importance),TEMP,0.12723372758930762
+Summer,random_80_20,decision_tree (importance),PRES,0.1337838105718403
+Summer,random_80_20,decision_tree (importance),DEWP,0.5301389448567441
+Summer,random_80_20,decision_tree (importance),RAIN,0.020890037331419222
+Summer,random_80_20,decision_tree (importance),WSPM,0.07893203714185959
+Summer,random_80_20,decision_tree (importance),wd_sin,0.03298600808809091
+Summer,random_80_20,decision_tree (importance),wd_cos,0.07603543442073837
+Summer,chronological_last_year,linear (standardized coef),TEMP,0.008071759951336245
+Summer,chronological_last_year,linear (standardized coef),PRES,0.0840155839998426
+Summer,chronological_last_year,linear (standardized coef),DEWP,0.5444876498061401
+Summer,chronological_last_year,linear (standardized coef),RAIN,-0.004590885409909203
+Summer,chronological_last_year,linear (standardized coef),WSPM,0.011186039173758607
+Summer,chronological_last_year,linear (standardized coef),wd_sin,0.05805816186407656
+Summer,chronological_last_year,linear (standardized coef),wd_cos,-0.15383891318537601
+Summer,chronological_last_year,decision_tree (importance),TEMP,0.022403110471100475
+Summer,chronological_last_year,decision_tree (importance),PRES,0.0
+Summer,chronological_last_year,decision_tree (importance),DEWP,0.8935879088121547
+Summer,chronological_last_year,decision_tree (importance),RAIN,0.004869467706303803
+Summer,chronological_last_year,decision_tree (importance),WSPM,0.004749093078465862
+Summer,chronological_last_year,decision_tree (importance),wd_sin,0.0036997972208635322
+Summer,chronological_last_year,decision_tree (importance),wd_cos,0.07069062271111165
+Autumn,random_80_20,linear (standardized coef),TEMP,-0.6958378215866379
+Autumn,random_80_20,linear (standardized coef),PRES,-0.10913833259848216
+Autumn,random_80_20,linear (standardized coef),DEWP,0.7619145210925999
+Autumn,random_80_20,linear (standardized coef),RAIN,-0.05303312802391422
+Autumn,random_80_20,linear (standardized coef),WSPM,-0.10963580968170306
+Autumn,random_80_20,linear (standardized coef),wd_sin,0.07648653413487827
+Autumn,random_80_20,linear (standardized coef),wd_cos,-0.2191646146381957
+Autumn,random_80_20,decision_tree (importance),TEMP,0.1992773199846511
+Autumn,random_80_20,decision_tree (importance),PRES,0.15669473301035644
+Autumn,random_80_20,decision_tree (importance),DEWP,0.2624401376693565
+Autumn,random_80_20,decision_tree (importance),RAIN,0.01419019715060991
+Autumn,random_80_20,decision_tree (importance),WSPM,0.23353481600258735
+Autumn,random_80_20,decision_tree (importance),wd_sin,0.03976456240749213
+Autumn,random_80_20,decision_tree (importance),wd_cos,0.09409823377494674
+Autumn,chronological_last_year,linear (standardized coef),TEMP,-0.6671958499927705
+Autumn,chronological_last_year,linear (standardized coef),PRES,-0.09165396600167075
+Autumn,chronological_last_year,linear (standardized coef),DEWP,0.7694419286441334
+Autumn,chronological_last_year,linear (standardized coef),RAIN,-0.05906526760596666
+Autumn,chronological_last_year,linear (standardized coef),WSPM,-0.10607896794961069
+Autumn,chronological_last_year,linear (standardized coef),wd_sin,0.07381163060670838
+Autumn,chronological_last_year,linear (standardized coef),wd_cos,-0.19636216716557595
+Autumn,chronological_last_year,decision_tree (importance),TEMP,0.07840776169872182
+Autumn,chronological_last_year,decision_tree (importance),PRES,0.01547053833442637
+Autumn,chronological_last_year,decision_tree (importance),DEWP,0.33944700890339946
+Autumn,chronological_last_year,decision_tree (importance),RAIN,0.0019496171947789396
+Autumn,chronological_last_year,decision_tree (importance),WSPM,0.46443313457383534
+Autumn,chronological_last_year,decision_tree (importance),wd_sin,0.0
+Autumn,chronological_last_year,decision_tree (importance),wd_cos,0.10029193929483793
+Winter,random_80_20,linear (standardized coef),TEMP,-0.23591217943590434
+Winter,random_80_20,linear (standardized coef),PRES,-0.14470172024215905
+Winter,random_80_20,linear (standardized coef),DEWP,0.7732551912666958
+Winter,random_80_20,linear (standardized coef),RAIN,-0.06487427210140428
+Winter,random_80_20,linear (standardized coef),WSPM,-0.23532458963690095
+Winter,random_80_20,linear (standardized coef),wd_sin,0.04113816787376638
+Winter,random_80_20,linear (standardized coef),wd_cos,-0.17783259055265854
+Winter,random_80_20,decision_tree (importance),TEMP,0.0597724550859863
+Winter,random_80_20,decision_tree (importance),PRES,0.054358256282810984
+Winter,random_80_20,decision_tree (importance),DEWP,0.6683825249889975
+Winter,random_80_20,decision_tree (importance),RAIN,0.0035123477320494214
+Winter,random_80_20,decision_tree (importance),WSPM,0.14433340540945683
+Winter,random_80_20,decision_tree (importance),wd_sin,0.013653409534000472
+Winter,random_80_20,decision_tree (importance),wd_cos,0.055987600966698366
+Winter,chronological_last_year,linear (standardized coef),TEMP,-0.20501004677065765
+Winter,chronological_last_year,linear (standardized coef),PRES,-0.12732805645360662
+Winter,chronological_last_year,linear (standardized coef),DEWP,0.7661390684468482
+Winter,chronological_last_year,linear (standardized coef),RAIN,-0.06268933967205004
+Winter,chronological_last_year,linear (standardized coef),WSPM,-0.2443982343799837
+Winter,chronological_last_year,linear (standardized coef),wd_sin,0.03703217387823042
+Winter,chronological_last_year,linear (standardized coef),wd_cos,-0.15856168992001007
+Winter,chronological_last_year,decision_tree (importance),TEMP,0.034935476942659555
+Winter,chronological_last_year,decision_tree (importance),PRES,0.013107758954378825
+Winter,chronological_last_year,decision_tree (importance),DEWP,0.7361309267076885
+Winter,chronological_last_year,decision_tree (importance),RAIN,0.0029774540527764378
+Winter,chronological_last_year,decision_tree (importance),WSPM,0.16045664100102922
+Winter,chronological_last_year,decision_tree (importance),wd_sin,0.0015606214147812628
+Winter,chronological_last_year,decision_tree (importance),wd_cos,0.05083112092668603
