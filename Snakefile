@@ -17,7 +17,12 @@ rule all:
         "results/abatement_scenarios.csv",
         "results/graphs/pm25_rate_of_change.png",
         "results/graphs/cumulative_exposure.png",
-        "results/graphs/weather_regimes_pca.png"
+        "results/graphs/weather_regimes_pca.png",
+        "results/pm25_group_summary.csv",
+        "results/mannwhitney_tests.csv",
+        "results/stratified_correlation.csv",
+        "results/graphs/pm25_by_season.png",
+        "results/graphs/stratified_spearman_heatmap.png"
 
 rule preprocess:
     input:
@@ -54,5 +59,18 @@ rule optimization:
         "results/graphs/pm25_rate_of_change.png",
         "results/graphs/cumulative_exposure.png",
         "results/graphs/weather_regimes_pca.png"
+    shell:
+        "python {input.script}"
+
+rule hypothesis_tests:
+    input:
+        script = "src/hypothesis_tests.py",
+        data = "results/cleaned_data.csv"
+    output:
+        "results/pm25_group_summary.csv",
+        "results/mannwhitney_tests.csv",
+        "results/stratified_correlation.csv",
+        "results/graphs/pm25_by_season.png",
+        "results/graphs/stratified_spearman_heatmap.png"
     shell:
         "python {input.script}"
