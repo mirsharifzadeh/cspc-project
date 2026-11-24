@@ -65,3 +65,52 @@ Running `snakemake --cores 1` now additionally generates:
 * `results/normality_tests.csv` — D'Agostino K² statistics, p-values, and skewness coefficients.
 * `results/correlation_spearman.csv` & `results/correlation_pearson.csv` — Full pairwise correlation matrices.
 * `results/graphs/correlation_heatmap.png` — Annotated Spearman correlation heatmap.
+
+## Stage 2: Numerical Calculus, Predictive Modeling, Weather Regimes & Precursor Optimization (`src/optimization.py`)
+
+### 1. Numerical Differentiation & Exposure Integration
+To quantify both short-term pollution buildup/clearance dynamics and long-term population exposure across the 12 monitoring stations without cross-station boundary artifacts, numerical calculus methods were applied within each station (`groupby('station')`):
+- **Rate of Change (`np.gradient`):** Computed hourly finite-difference derivatives ($d[\text{PM}_{2.5}]/dt$ in $\mu\text{g}/(\text{m}^3\cdot\text{h})$) across each station's continuous time series and summarized by median, interquartile range (IQR), and 95% confidence intervals across seasons and sites (`results/pm25_rate_of_change.csv`, `results/graphs/pm25_rate_of_change.png`).
+- **Cumulative & Seasonal Exposure (`cumulative_trapezoid` & `trapezoid`):** Integrated hourly $\text{PM}_{2.5}$ concentrations over time using the trapezoidal rule (converted from $\mu\text{g}\cdot\text{h}/\text{m}^3$ to $\mu\text{g}\cdot\text{day}/\text{m}^3$ by dividing by 24). Winter seasons were grouped across the December–February boundary (`season_year = year + (month == 12)`) to avoid multi-month integration gaps (`results/pm25_exposure.csv`, `results/graphs/cumulative_exposure.png`).
+
+### 2. Predictive Modeling & Time-Series Validation Strategy
+Because `PM2.5` exhibits strong right skewness (established in Stage 1), models were trained to predict $\log(1 + \text{PM}_{2.5})$ using gaseous precursors (`SO2`, `NO2`, `CO`, `O3`) and meteorological features (`TEMP`, `PRES`, `DEWP`, `RAIN`, `WSPM`, plus cyclical wind-direction components $\sin\theta, \cos\theta$):
+- **Model Comparison:** Evaluated **Linear Regression**, **Polynomial Regression (degree 2)**, and **Decision Tree Regressors** (with `max_depth` tuned on a held-out validation fold) using `StandardScaler` fitted strictly on training partitions to prevent data leakage (`results/model_performance.csv`, `results/model_coefficients.csv`).
+- **Random vs. Chronological Hold-Out Validation:** Compared standard random `80/20` splits against chronological splits (`VAL_START = 2015-03-01`, `TEST_START = 2016-03-01`), demonstrating that random splits inflate $R^2$ due to hourly autocorrelation whereas chronological testing measures true out-of-sample generalization across seasons.
+
+### 3. Synoptic Weather Regime Clustering (`PCA` + `KMeans`)
+To identify distinct atmospheric regimes governing air quality:
+- **Dimensionality Reduction & Clustering:** Eight standardized meteorological and log-pollution features (`TEMP`, `PRES`, `DEWP`, `RAIN`, `WSPM`, wind-direction components, and $\log(1 + \text{PM}_{2.5})$) were projected onto **3 principal components (`PCA`)** and partitioned into **4 synoptic clusters (`KMeans`)** (`results/weather_regimes.csv`, `results/graphs/weather_regimes_pca.png`).
+- **Physical Interpretation:** Separates cold, stagnant, high-pressure winter accumulation regimes (high $\text{PM}_{2.5}$, low wind speed) from well-ventilated northwesterly dispersion regimes and warm, humid summer photochemical regimes.
+
+### 4. Constrained Precursor Abatement Optimization (`SLSQP`)
+To evaluate emission-control strategies for reducing mean $\text{PM}_{2.5}$ below target thresholds ($75, 100, 150\ \mu\text{g}/\text{m}^3$) across each station and city-wide (`"All"`):
+- **Formulation:** Minimized total quadratic abatement effort $J(x) = x_{\text{SO}_2}^2 + x_{\text{NO}_2}^2 + x_{\text{CO}}^2$ using Sequential Least Squares Programming (`scipy.optimize.minimize(..., method="SLSQP")`), subject to bounds $0 \le x_i \le 0.80$ (maximum 80% precursor reduction) and the nonlinear inequality constraint $\widehat{\text{PM}}_{2.5}(x) \le \text{target}$ (`results/abatement_scenarios.csv`).
+
+### 5. Updated Snakemake Outputs
+Running `snakemake --cores 1` additionally generates:
+- `results/pm25_rate_of_change.csv` & `results/graphs/pm25_rate_of_change.png` — Station and seasonal $d[\text{PM}_{2.5}]/dt$ summary statistics and distributions.
+- `results/pm25_exposure.csv` & `results/graphs/cumulative_exposure.png` — Trapezoidal cumulative and seasonal $\text{PM}_{2.5}$ exposure integrals.
+- `results/model_performance.csv` & `results/model_coefficients.csv` — Regression and decision-tree metrics ($R^2$, adjusted $R^2$, RMSE, MAE) across random and chronological splits.
+- `results/weather_regimes.csv` & `results/graphs/weather_regimes_pca.png` — PCA + KMeans weather regime cluster profiles and spatial shares.
+- `results/abatement_scenarios.csv` — Optimal precursor reduction percentages ($\text{SO}_2$, $\text{NO}_2$, $\text{CO}$) per target threshold and station.
+
+---
+
+## Stage 3: Statistical Hypothesis Testing & Stratified Correlation (`src/hypothesis_tests.py`)
+
+### 1. Feature Engineering & Group Summaries
+- **Derived Features (`add_features`):** Mapped months to seasons (`Spring`, `Summer`, `Autumn`, `Winter`), converted 16-point wind directions (`wd`) to cyclical components ($\sin\theta, \cos\theta$), and computed relative humidity ($\text{RH}$ in %) from `TEMP` and `DEWP` via the Magnus-Tetens approximation.
+- **Descriptive Summaries (`summarize`):** Computed $n$, median, IQR, mean, standard error, and 95% confidence intervals across all seasons and meteorological regimes (`results/pm25_group_summary.csv`, `results/graphs/pm25_by_season.png`).
+
+### 2. Mann-Whitney $U$ Hypothesis Tests
+- **Pairwise & Regime Comparisons (`compare_groups`):** Conducted two-sided Mann-Whitney $U$ tests ($\alpha = 0.05$) with rank-biserial effect sizes ($r_{\text{rb}} = \frac{2U}{n_a n_b} - 1$) across all 6 seasonal pairs and 3 weather regimes—wind ($\text{WSPM} < 1.5$ vs. $\ge 3.0$), rain ($\text{RAIN} = 0$ vs. $> 0$), and humidity ($\text{RH} \le 25\text{th}$ vs. $\ge 75\text{th}$ percentile)—both pooled (`"All"`) and within each season (`results/mannwhitney_tests.csv`).
+
+### 3. Stratified Correlation Analysis
+- **Station & Season Correlations (`safe_corr`):** Computed Spearman ($\rho$) and Pearson ($r$) correlations with $p$-values between $\text{PM}_{2.5}$ and meteorological variables (`TEMP`, `PRES`, `DEWP`, `RAIN`, `WSPM`, `wd_sin`, `wd_cos`) grouped by `(station, season)` (`results/stratified_correlation.csv`, `results/graphs/stratified_spearman_heatmap.png`).
+
+### 4. Updated Snakemake Outputs
+Running `snakemake --cores 1` additionally generates:
+- `results/pm25_group_summary.csv` & `results/graphs/pm25_by_season.png` — Seasonal and regime-level $\text{PM}_{2.5}$ summary statistics and seasonal boxplots.
+- `results/mannwhitney_tests.csv` — Pairwise seasonal and weather regime Mann-Whitney $U$ statistics, $p$-values, and rank-biserial effect sizes.
+- `results/stratified_correlation.csv` & `results/graphs/stratified_spearman_heatmap.png` — Station- and season-stratified Spearman/Pearson correlations and 4-panel seasonal heatmaps.
