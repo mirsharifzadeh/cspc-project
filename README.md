@@ -9,9 +9,9 @@ cspc-project/
 ├── data/               # Raw CSV files for the 12 monitoring stations (PRSA_Data_*.csv)
 ├── src/                # Python modules for data processing and analysis
 │   ├── processing.py       # Data merging, sorting, and missing value imputation
-│   ├── correlation.py      # Distribution (normality) tests and correlation analysis (Planned)
-│   ├── hypothesis_tests.py # Statistical hypothesis testing (Planned)
-│   └── optimization.py     # Optimization models (Planned)
+│   ├── correlation.py      # Distribution (normality) tests and correlation analysis
+│   ├── hypothesis_tests.py # Mann-Whitney U hypothesis testing and stratified correlations
+│   └── optimization.py     # Numerical calculus, predictive modeling, weather regimes, and SLSQP optimization
 ├── results/            # Processed datasets, statistical tables, and visualizations
 ├── tests/              # Unit tests
 ├── environment.yml     # Conda environment dependencies
